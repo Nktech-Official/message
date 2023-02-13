@@ -254,12 +254,26 @@ app.post("/session/login", async (req, res) => {
                 ssks2mrkey: twoManRuleKey,
               },
               (e) => {
-                res.status(200).json({
-                  twoManRuleSessionId,
-                  twoManRuleKey: twoManRuleKey,
-                  mustAuthenticate,
-                  passRetrival: true,
-                });
+                if (req.body.mode === "mobile") {
+                  res.status(200).json({
+                    twoManRuleSessionId,
+                    twoManRuleKey: twoManRuleKey,
+                    mustAuthenticate,
+                    passRetrival: true,
+                    appId: process.env.seald_appId,
+                    sessionId: req.sessionID,
+                    databaseKey: databaseKey
+
+                  });
+                } else {
+                  res.status(200).json({
+                    twoManRuleSessionId,
+                    twoManRuleKey: twoManRuleKey,
+                    mustAuthenticate,
+                    passRetrival: true,
+                  })
+                }
+
               }
             );
           }
